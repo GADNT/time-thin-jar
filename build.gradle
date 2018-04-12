@@ -43,7 +43,8 @@ thinResolvePrepare {
 //jar {enabled = true}
 
 ext {
-	springCloudVersion = 'Finchley.M9'
+//	springCloudVersion = 'Finchley.M9'
+	springCloudVersion = 'Dalston.SR5'
 }
 
 dependencies {

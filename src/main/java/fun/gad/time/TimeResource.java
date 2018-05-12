@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +42,9 @@ public class TimeResource {
 
     @GetMapping(value = "/support/{startdate}/{year}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<TimeInfo> processSupportDate(@PathVariable(value = "startdate") String startDate,
-                                                       @PathVariable(value = "year") int year) {
+                                                       @Valid @PathVariable(value = "year") Integer year) {
 
-        BadTimeInput badTimeInput = new BadTimeInput(startDate).invoke();
+        BadTimeInput badTimeInput = new BadTimeInput(startDate, year).invoke();
         if (badTimeInput.is()) return ResponseEntity.badRequest().body(badTimeInput.getTimeInfo());
 
         TimeInfo supportDates = timeObject.calculateSupportDates(startDate, year);
@@ -53,10 +55,12 @@ public class TimeResource {
     private class BadTimeInput {
         private boolean myResult;
         private String startDate;
+        private int year;
         private TimeInfo timeInfo;
 
-        public BadTimeInput(String startDate) {
+        public BadTimeInput(String startDate, int year) {
             this.startDate = startDate;
+            this.year = year;
         }
 
         boolean is() {
@@ -69,13 +73,27 @@ public class TimeResource {
 
         public BadTimeInput invoke() {
             try {
-               DateTimeFormatter.ofPattern("ddMMyyyy").parse(startDate);
+                DateTimeFormatter.ofPattern("ddMMyyyy").parse(startDate);
             } catch (Exception e) {
                 timeInfo = new TimeInfo("Date in wrong format! Try : ddMMyyyy format!");
 
                 myResult = true;
                 return this;
             }
+
+            LocalDate date = LocalDate.now();
+            if (year <= 0) {
+                timeInfo = new TimeInfo("Year should be positive!");
+
+                myResult = true;
+                return this;
+            } else if (year < date.getYear()) {
+                timeInfo = new TimeInfo("Year should be at least the current year!");
+
+                myResult = true;
+                return this;
+            }
+
             myResult = false;
             return this;
         }

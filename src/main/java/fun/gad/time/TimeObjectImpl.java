@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static fun.gad.time.constants.TimeContants.DATE_FORMAT;
 import static java.time.DayOfWeek.MONDAY;
 
 @Service
@@ -19,7 +20,7 @@ public class TimeObjectImpl {
         TimeInfo timeInfo = new TimeInfo();
 
         Map<String, String> supportDateMap = new LinkedHashMap<>();
-        LocalDate date = LocalDate.parse(starDate, DateTimeFormatter.ofPattern("ddMMyyyy"));
+        LocalDate date = LocalDate.parse(starDate, DateTimeFormatter.ofPattern(DATE_FORMAT));
 
         LocalDate nextMonday = date;
 

@@ -35,10 +35,10 @@ public class TimeObjectImpl {
                 LocalDate sunday = nextMonday.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
 
                 String nextDay = String.join(":", String.valueOf(sunday.getDayOfMonth()),
-                        sunday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH), String.valueOf(sunday.getYear()));
+                        sunday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase(), String.valueOf(sunday.getYear()));
 
                 String currentDay = String.join(":", String.valueOf(nextMonday.getDayOfMonth()),
-                        nextMonday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH), String.valueOf(nextMonday.getYear()));
+                        nextMonday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase(), String.valueOf(nextMonday.getYear()));
 
                 supportDateMap.put(currentDay, nextDay);
                 nextMonday = getNextMondayAroundDate(sunday).plusWeeks(3);

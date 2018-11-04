@@ -4,9 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.time.temporal.TemporalAdjusters;
 import java.util.LinkedHashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import static fun.gad.time.constants.TimeContants.DATE_FORMAT;
@@ -28,19 +32,30 @@ public class TimeObjectImpl {
 
             if (nextMonday.getDayOfWeek().equals(MONDAY)) {
 
-                LocalDate week = nextMonday.plusDays(6);
-                supportDateMap.put(nextMonday.getDayOfMonth() + ":" + nextMonday.getMonth() + ":" + nextMonday.getYear(), week.getDayOfMonth() + ":" + week.getMonth() + ":" + week.getYear());
-                nextMonday = week.plusDays(1).plusWeeks(3);
+                LocalDate sunday = nextMonday.with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+
+                String nextDay = String.join(":", String.valueOf(sunday.getDayOfMonth()),
+                        sunday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH), String.valueOf(sunday.getYear()));
+
+                String currentDay = String.join(":", String.valueOf(nextMonday.getDayOfMonth()),
+                        nextMonday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH), String.valueOf(nextMonday.getYear()));
+
+                supportDateMap.put(currentDay, nextDay);
+                nextMonday = getNextMondayAroundDate(sunday).plusWeeks(3);
 
             } else {
-                timeInfo.setMessage("It's not a Monday! Try another day!");
-
+                nextMonday = getNextMondayAroundDate(nextMonday);
+                timeInfo.setMessage("It's not a Monday! Next Monday is: " + nextMonday.getDayOfMonth());
                 log.info("It's a beautiful day since is not Monday!");
             }
         }
 
         timeInfo.setTimeSupport(supportDateMap);
         return timeInfo;
+    }
+
+    private LocalDate getNextMondayAroundDate(LocalDate nextMonday) {
+        return nextMonday.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
     }
 
 }

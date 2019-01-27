@@ -17,6 +17,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
 
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
+
 @RestController
 @RequestMapping(value = "/time")
 public class TimeResource {
@@ -48,6 +51,8 @@ public class TimeResource {
         if (badTimeInput.is()) return ResponseEntity.badRequest().body(badTimeInput.getTimeInfo());
 
         TimeInfo supportDates = timeObject.calculateSupportDates(startDate, year);
+
+        supportDates.add(linkTo(methodOn(TimeResource.class).processSupportDate(startDate,year)).withSelfRel());
 
         return ResponseEntity.ok(supportDates);
     }

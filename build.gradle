@@ -1,6 +1,6 @@
 buildscript {
 	ext {
-		springBootVersion = '1.5.1.RELEASE'
+		springBootVersion = '2.1.2.RELEASE'
         wrapperVersion = '1.0.9.BUILD-SNAPSHOT'
 	}
     repositories {
@@ -23,7 +23,7 @@ apply plugin: 'io.spring.dependency-management'
 apply plugin: 'org.springframework.boot.experimental.thin-launcher'
 
 group = 'fun.gad'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.2-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -44,13 +44,14 @@ thinResolvePrepare {
 
 ext {
 //	springCloudVersion = 'Finchley.M9'
-	springCloudVersion = 'Dalston.SR5'
+	springCloudVersion = 'Finchley.SR2'
 }
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.cloud:spring-cloud-starter-oauth2')
+	implementation('org.springframework.boot:spring-boot-starter-hateoas')
 
 //// https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis
 //	compile group: 'org.springframework.session', name: 'spring-session-data-redis', version: '1.0.0.RELEASE'

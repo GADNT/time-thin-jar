@@ -9,7 +9,7 @@ public class ErrorAdvice {
 
     //todo: change this with error message class
     @ExceptionHandler(NumberFormatException.class)
-    public ResponseEntity<TimeInfo> handleBadrequest() {
+    public ResponseEntity<TimeInfo> handleBadRequest() {
         TimeInfo timeInfo = new TimeInfo("Date or year not in an accepted formats!");
         return ResponseEntity.badRequest().body(timeInfo);
     }

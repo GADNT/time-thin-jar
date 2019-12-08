@@ -1,5 +1,6 @@
 package fun.gad.time;
 
+import org.springframework.boot.actuate.autoconfigure.security.reactive.EndpointRequest;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -20,9 +21,9 @@ public class SecurityConfiguration extends ResourceServerConfigurerAdapter {
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 //                .and()
                 .requestMatchers()
-                    .antMatchers("/ping/**")
+                .antMatchers("/ping/**")
 
-                    .and()
+                .and()
                 .requestMatcher(new NegatedRequestMatcher(new AntPathRequestMatcher("/ping/**")))
 //                .requestMatchers()
 //                .antMatchers("/time/**");

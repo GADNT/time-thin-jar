@@ -1,7 +1,18 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+group = 'fun.gad'
+description = 'Time Application'
+version = '1.1.0-SNAPSHOT'
+
+project.ext {
+	name = "Time Apps"
+	shortName = 'time'
+}
+
+
 buildscript {
 	ext {
-		springBootVersion = '2.1.2.RELEASE'
-        wrapperVersion = '1.0.9.BUILD-SNAPSHOT'
+		springBootVersion = '2.2.2.RELEASE'
 	}
     repositories {
         mavenLocal()
@@ -11,7 +22,7 @@ buildscript {
     }
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:${wrapperVersion}")
+        classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:1.0.23.RELEASE")
 	}
 }
 
@@ -24,8 +35,21 @@ apply plugin: 'org.springframework.boot.experimental.thin-launcher'
 
 group = 'fun.gad'
 version = '0.0.2-SNAPSHOT'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
+
+jar {
+
+	baseName = 'fun.gad.time'
+	version = "${project.version}"
+
+	manifest {
+		attributes 'Implementation-Title': rootProject.name,
+				'Implementation-Version': version,
+				'Implementation-Vendor-Id': group,
+				'Implementation-Vendor': 'Gabriel Deaconu'
+	}
+}
 
 repositories {
     mavenLocal()
@@ -38,21 +62,17 @@ thinResolvePrepare {
     into new File("${buildDir}/thin/deploy")
 }
 
-//bootJar { enabled = true }
-
-//jar {enabled = true}
-
 ext {
 //	springCloudVersion = 'Finchley.M9'
-	springCloudVersion = 'Finchley.SR2'
+	springCloudVersion = 'Hoxton.M3'
 }
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-security')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.cloud:spring-cloud-starter-oauth2')
-	implementation('org.springframework.boot:spring-boot-starter-hateoas')
-
+	compile('org.springframework.boot:spring-boot-starter-hateoas')
+	compile("org.springframework.boot:spring-boot-starter-actuator")
 //// https://mvnrepository.com/artifact/org.springframework.session/spring-session-data-redis
 //	compile group: 'org.springframework.session', name: 'spring-session-data-redis', version: '1.0.0.RELEASE'
 
@@ -66,4 +86,7 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+bootRun {
+	systemProperties System.properties
 }

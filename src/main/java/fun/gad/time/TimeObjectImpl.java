@@ -41,7 +41,7 @@ public class TimeObjectImpl {
                         nextMonday.getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH).toUpperCase(), String.valueOf(nextMonday.getYear()));
 
                 supportDateMap.put(currentDay, nextDay);
-                nextMonday = getNextMondayAroundDate(sunday).plusWeeks(3);
+                nextMonday = getNextMondayAroundDate(sunday).plusWeeks(2);
 
             } else {
                 nextMonday = getNextMondayAroundDate(nextMonday);
@@ -49,7 +49,7 @@ public class TimeObjectImpl {
                 log.info("It's a beautiful day since is not Monday!");
             }
         }
-
+timeInfo.setMatrix(sumMatrixElementsOneIteration());
         timeInfo.setTimeSupport(supportDateMap);
         return timeInfo;
     }
@@ -58,4 +58,54 @@ public class TimeObjectImpl {
         return nextMonday.with(TemporalAdjusters.nextOrSame(DayOfWeek.MONDAY));
     }
 
+/*
+    private static int sumMatrixElements(){
+
+        int rez = 0;
+        int[][] multi = new int[][]{
+                { 2, 3, 4, 5, 6 },
+                { 3, 4, 5, 6, 7 },
+                { 4, 5, 6, 7, 8 },
+                { 5, 6, 7, 8, 9 },
+                { 6, 7, 8, 9, 10 }
+        };
+
+        for (int i = 0; i < multi.length; i++) {
+            for (int j = 0; j < multi.length; j++) {
+                System.out.println("matrix  :  "+ i + " <-> " + j + "rez: " + rez);
+                rez += multi[i][j];
+
+            }
+        }
+
+        return rez;
+
+    }*/
+
+
+   private static int sumMatrixElementsOneIteration(){
+
+        int rezit = 0;
+        int[][] multi = new int[][]{
+                { 2, 3, 4, 5, 6 },
+                { 3, 4, 5, 6, 7 },
+                { 4, 5, 6, 7, 8 },
+                { 5, 6, 7, 8, 9 },
+                { 6, 7, 8, 9, 10 }
+        };
+
+        for (int i = 0; i < multi.length; i++) {
+            int c = i;
+//            for (int j = 0; j < multi.length; j++) {
+            if(c<i) {
+                System.out.println("matrix  :  " + i + " <-> " + c + "rez: " + rezit);
+                rezit += multi[i][c];
+                c++;
+            }
+//            }
+        }
+
+        return rezit;
+
+    }
 }

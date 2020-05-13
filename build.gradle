@@ -1,5 +1,35 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
+buildscript {
+	ext {
+		springBootVersion = '2.2.2.RELEASE'
+	}
+    repositories {
+        //mavenLocal()
+        mavenCentral()
+        maven { url "https://repo.spring.io/snapshot" }
+        maven { url "https://repo.spring.io/milestone" }
+    }
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+       // classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:1.0.23.RELEASE")
+	}
+}
+
+plugins {
+	// Apply the java plugin to add support for Java
+	id 'java'
+	id 'lenala.azure.azurewebapp' version '1.0'
+	// Apply the application plugin to add support for building a CLI application.
+	id 'application'
+}
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'org.springframework.boot.experimental.thin-launcher'
+
 group = 'fun.gad'
 description = 'Time Application'
 version = '1.1.0-SNAPSHOT'
@@ -9,34 +39,8 @@ project.ext {
 	shortName = 'time'
 }
 
-
-buildscript {
-	ext {
-		springBootVersion = '2.2.2.RELEASE'
-	}
-    repositories {
-        mavenLocal()
-        mavenCentral()
-        maven { url "https://repo.spring.io/snapshot" }
-        maven { url "https://repo.spring.io/milestone" }
-    }
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("org.springframework.boot.experimental:spring-boot-thin-gradle-plugin:1.0.23.RELEASE")
-	}
-}
-
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'maven'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'org.springframework.boot.experimental.thin-launcher'
-
-group = 'fun.gad'
-version = '0.0.2-SNAPSHOT'
-sourceCompatibility = 11
-targetCompatibility = 11
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 jar {
 
@@ -58,9 +62,9 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-thinResolvePrepare {
+/*thinResolvePrepare {
     into new File("${buildDir}/thin/deploy")
-}
+}*/
 
 ext {
 //	springCloudVersion = 'Finchley.M9'
@@ -85,6 +89,31 @@ dependencies {
 dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+application {
+	// Define the main class for the application.
+	mainClassName = 'fun.gad.time.TimeApplication'
+}
+
+
+azureWebApp {
+	resourceGroup = System.getProperty("resourceGroup")
+	appName = System.getProperty("appName")
+	pricingTier = System.getProperty("pricingTier")
+	region = System.getProperty("region")
+	appServicePlanName = System.getProperty("appServicePlanName")
+	appService = {
+		type = 'linux'
+		runtimeStack = 'jre8'
+		javaVersion = '1.8'
+	}
+	authentication = {
+		type = 'azurecli'
+	}
+	deployment = {
+		type = 'jar'
 	}
 }
 bootRun {

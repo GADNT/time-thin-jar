@@ -3,10 +3,10 @@ package fun.gad.time;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-@Controller
+@RestController
 @RequestMapping(value = "/")
 public class PingResource {
 
@@ -24,8 +24,8 @@ public class PingResource {
         return "OK";
     }
 
-    @GetMapping(value ="/quarantine/{startdate}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> processQuarantineDate(@Valid @PathVariable(value = "startdate",required = true) String startDate) {
+    @GetMapping(value = "/quarantine/{startdate}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> processQuarantineDate(@Valid @PathVariable(value = "startdate", required = true) String startDate) {
 //        String now = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String now = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String in = Optional.ofNullable(startDate)

@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 buildscript {
 	ext {
-		springBootVersion = '2.2.2.RELEASE'
+		springBootVersion = '2.2.7.RELEASE'
 	}
     repositories {
         //mavenLocal()
@@ -68,7 +68,7 @@ repositories {
 
 ext {
 //	springCloudVersion = 'Finchley.M9'
-	springCloudVersion = 'Hoxton.M3'
+	springCloudVersion = 'Hoxton.SR4'
 }
 
 dependencies {

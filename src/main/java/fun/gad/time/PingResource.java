@@ -25,7 +25,7 @@ public class PingResource {
     }
 
     @GetMapping(value = "/quarantine/{startdate}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> processQuarantineDate(@Valid @PathVariable(value = "startdate", required = true) String startDate) {
+    public ResponseEntity<Quarantine> processQuarantineDate(@Valid @PathVariable(value = "startdate", required = true) String startDate) {
 //        String now = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String now = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String in = Optional.ofNullable(startDate)
@@ -34,9 +34,9 @@ public class PingResource {
         return new ResponseEntity<>(prettyFormatDays(now, in), HttpStatus.OK);
     }
 
-    private String prettyFormatDays(String now, String in) {
+    private Quarantine prettyFormatDays(String now, String in) {
         long daysBetween = calculateDaysBetween(in, now);
-        return "Quarantine : " + daysBetween + " days.";
+        return new Quarantine("Enjoy the quarantine!", String.valueOf(daysBetween));
     }
 
     private static boolean checkFormatAccepted(String date) {

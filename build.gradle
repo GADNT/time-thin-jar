@@ -19,7 +19,7 @@ buildscript {
 plugins {
 	// Apply the java plugin to add support for Java
 	id 'java'
-	id 'lenala.azure.azurewebapp' version '1.0'
+	id "lenala.azure.azurewebapp" version "1.0.2"
 	// Apply the application plugin to add support for building a CLI application.
 	id 'application'
 }
@@ -39,8 +39,8 @@ project.ext {
 	shortName = 'time'
 }
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
+sourceCompatibility = 11
+targetCompatibility = 11
 
 jar {
 
@@ -106,8 +106,8 @@ azureWebApp {
 	appServicePlanName = System.getProperty("appServicePlanName")
 	appService = {
 		type = 'linux'
-		runtimeStack = 'jre8'
-		javaVersion = '1.8'
+		runtimeStack = '11-java11'
+		javaVersion = '11'
 	}
 	authentication = {
 		type = 'azurecli'

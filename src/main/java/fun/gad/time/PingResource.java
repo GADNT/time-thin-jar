@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
@@ -26,8 +28,8 @@ public class PingResource {
 
     @GetMapping(value = "/quarantine/{startdate}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Quarantine> processQuarantineDate(@Valid @PathVariable(value = "startdate", required = true) String startDate) {
-//        String now = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        String now = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        String now = LocalDate.ofInstant(Instant.now(), ZoneId.systemDefault()).format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+//        String now = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
         String in = Optional.ofNullable(startDate)
                 .filter(s -> s.length() >= 1 && checkFormatAccepted(s))
                 .orElse(now);
